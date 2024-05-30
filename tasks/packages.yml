@@ -11,47 +11,32 @@
 - name: Install base packages 
   ansible.builtin.dnf:
     name:
-      - "@Development Tools"
-      - alacritty
+      # System 
       - ansible
       - bluez
       - bluez-tools
-      - cascadia-code-pl-fonts
+      - dbus 
       - dbus-daemon
       - dbus-tools
+      - distrobox
       - dunst
-      - firefox
-      - gimp
       - gnome-keyring
-      - google-noto-emoji-fonts
       - gvfs-mtp
       - grim
       - grimshot
       - jmtpfs
-      - keepassxc
-      - kpcli
-      - ledger
-      - libreoffice
       - lxpolkit
-      - neovim
       - NetworkManager
       - NetworkManager-tui
       - openssh
       - openssl
       - papirus-icon-theme
-      - pavucontrol
       - pipewire
       - playerctl
       - polkit
-      - protonvpn-cli
-      - ranger
       - river
       - river-bsp-layout
-      - ripgrep
       - rofi-wayland
-      - rpmdevtools
-      - rpmlint
-      - rustup
       - swaybg
       - swayidle
       - swaylock
@@ -59,9 +44,6 @@
       - thunar
       - thunar-archive-plugin
       - thunar-volman
-      - torbrowser-launcher
-      - unzip
-      - vlc
       - waybar
       - wireplumber
       - wl-clipboard
@@ -69,21 +51,40 @@
       - xdg-desktop-portal-wlr
       - xdg-user-dirs
       - xorg-x11-server-Xwayland
+      
+      # Applications 
+      - alacritty
+      - firefox
+      - hledger
+      - keepassxc
+      - kpcli
+      - krita
+      - libreoffice
+      - neovim
+      - openvpn
+      - pavucontrol
+      - ranger
+      - ripgrep
+      - torbrowser-launcher
+      - unzip
+      - vlc
       - zip
-      - zsh
-      - zsh-autosuggestions
+
+      # Fonts 
+      - cascadia-code-pl-fonts
+      - google-noto-emoji-fonts
+
+      # Development 
+      - "@Development Tools"
+      - rpmdevtools
+      - rpmlint
+      - rustup
+
     state: latest
 
 - name: Autoremove unneeded packages 
   ansible.builtin.dnf: 
     autoremove: true
-
-- name: Install Oh-My-Zsh 
-  ansible.builtin.shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  args:
-    creates: "/home/{{ primary_user }}/.oh-my-zsh/oh-my-zsh.sh"
-  become: true
-  become_user: "{{ primary_user }}"
 
 - name: Run rustup-init
   ansible.builtin.shell: rustup-init --default-host x86_64-unknown-linux-gnu --profile default --default-toolchain stable -y
