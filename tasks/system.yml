@@ -4,24 +4,20 @@
   ansible.builtin.hostname: 
     name: "{{ hostname }}"
 
-- name: Speed up DNF
-  ansible.builtin.ini_file:
-    path: /etc/dnf/dnf.conf  # Adjust the path if needed
-    section: main
-    option: "{{ item.option }}"
-    value: "{{ item.value }}"
-  loop:
-    - { option: 'max_parallel_downloads', value: '15' }
-    - { option: 'fastestmirror', value: 'True' }
-
 - name: Enable Tailscaled
   ansible.builtin.systemd_service:
     name: tailscaled
     state: started
     enabled: true
 
-- name: Create cron job to refresh repos regularly 
-  ansible.builtin.cron:
-    name: "makecache"
-    minute: "*/15"
-    job: dnf makecache
+- name: Enable libvirtd 
+  ansible.builtin.systemd_service: 
+    name: libvirtd 
+    state: started 
+    enabled: true 
+
+- name: Enable plocate-updatedb 
+  ansible.builtin.systemd_service: 
+    name: plocate-updatedb.timer 
+    state: started 
+    enabled: true 

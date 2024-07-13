@@ -1,8 +1,11 @@
 --- 
 
 # This is an example of the vars.yml file. Before executing the playbook, please 
-# make any necessary and appropriate changes to this file to fit your use case, 
-# then rename the file vars.yml. 
+# make any necessary changes to this file to fit your use case, then rename the 
+# file to vars.yml. 
 
 primary_user: "user"
+preferred_shell: "/usr/bin/bash"
 hostname: "localhost"
+dnf_max_parallel_downloads: "15"
+dnf_fastestmirror: "True"

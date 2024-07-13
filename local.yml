@@ -7,8 +7,13 @@
   become: true
 
   tasks:
+    - name: Install preferred shell
+      ansible.builtin.dnf: 
+        name: "{{ preferred_shell }}"
+        state: latest
+
     - include_tasks: tasks/users.yml 
     - include_tasks: tasks/repos.yml
     - include_tasks: tasks/packages.yml
-    - include_tasks: tasks/copy_configs.yml
     - include_tasks: tasks/system.yml
+    - include_tasks: tasks/extra_packages.yml

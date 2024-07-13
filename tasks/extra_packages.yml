@@ -1,0 +1,46 @@
+--- 
+
+- name: Make temp dir for extras 
+  ansible.builtin.file: 
+    path: /tmp/extras 
+    state: directory 
+    mode: '0755'
+
+- name: Get Latest Starship Version 
+  ansible.builtin.shell: curl -s "https://api.github.com/repos/starship/starship/releases/latest" | grep '"tag_name"' | sed -E 's/.*"v?([^"]+)".*/\1/'
+  register: starship_version
+    
+- name: Download and Install Starship Prompt 
+  ansible.builtin.unarchive: 
+    src: "https://github.com/starship/starship/releases/download/v{{ starship_version.stdout }}/starship-x86_64-unknown-linux-gnu.tar.gz"
+    dest: /usr/bin/
+    remote_src: true
+
+- name: Get Latest Tidal Hifi Version 
+  ansible.builtin.shell: |
+    curl -s "https://api.github.com/repos/Mastermindzh/tidal-hifi/releases/latest" | grep '"tag_name"' | sed -E 's/.*"v?([^"]+)".*/\1/'
+  register: tidal_hifi_version
+
+- name: Get Latest FreeTube Version 
+  ansible.builtin.shell: | 
+    curl -s "https://api.github.com/repos/FreeTubeApp/FreeTube/releases" | grep -m 1 '"html_url": "https://github.com/FreeTubeApp/FreeTube/releases/tag' | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+'
+  register: freetube_version
+
+- name: Get Latest Heroic Version 
+  ansible.builtin.shell: | 
+    curl -s "https://api.github.com/repos/Heroic-Games-Launcher/HeroicGamesLauncher/releases/latest" | grep '"tag_name"' | sed -E 's/.*"v?([^"]+)".*/\1/'
+  register: heroic_version
+
+- name: Install Extra Software
+  ansible.builtin.dnf: 
+    name: 
+      - "https://github.com/FreeTubeApp/FreeTube/releases/download/v{{ freetube_version.stdout }}-beta/freetube_{{ freetube_version.stdout }}_amd64.rpm"
+      - "https://github.com/Mastermindzh/tidal-hifi/releases/download/{{ tidal_hifi_version.stdout }}/tidal-hifi-{{ tidal_hifi_version.stdout }}.x86_64.rpm"
+      - "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v{{ heroic_version.stdout }}/heroic-{{ heroic_version.stdout }}.x86_64.rpm"
+    disable_gpg_check: true
+    state: latest 
+
+- name: Clean tmp dir for extras
+  ansible.builtin.file: 
+    path: /tmp/extras 
+    state: absent 

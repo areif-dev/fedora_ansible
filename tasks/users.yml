@@ -3,3 +3,4 @@
 - name: Create primary_user and assign preferred shell
   user:
     name: "{{ primary_user }}"
+    shell: "{{ preferred_shell }}"
