@@ -66,6 +66,8 @@
       - bc 
       - distrobox 
       - firefox 
+      - keepassxc
+      - libreoffice
       - nvtop 
       - openvpn 
       - pavucontrol 
@@ -117,6 +119,10 @@
       # Recreation 
       - discord 
       - steam
+
+      # Networking 
+      - NetworkManager
+      - NetworkManager-tui
 
     state: latest
 
