@@ -34,6 +34,6 @@
     skip_if_unavailable: true 
     gpgcheck: true 
     gpgkey: https://download.copr.fedorainfracloud.org/results/areif-dev/river-bsp-layout/pubkey.gpg
-    repo_gpgcheck: true 
+    repo_gpgcheck: false
     enabled: true 
     async: true
