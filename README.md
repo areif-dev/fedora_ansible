@@ -8,7 +8,7 @@ git clone https://github.com/areif-dev/ansible-provision -b <branch-name>
 
 ## Installing 
 
-These playbooks are mostly designed to be run on the local system, rather than on a remote target. Therefore, first make sure that [https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#selecting-an-ansible-package-and-version-to-install](Ansible is installed). 
+These playbooks are mostly designed to be run on the local system, rather than on a remote target. Therefore, first make sure that [Ansible is installed](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#selecting-an-ansible-package-and-version-to-install). 
 
 Now clone the repo with your preferred branch selected: 
 
