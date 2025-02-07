@@ -3,7 +3,7 @@
     name: tailscale-stable 
     description: Tailscale stable 
     async: true 
-    baseurl: https://pkgs.tailscale.com/stable/rhel/9/tailscale.repo
+    baseurl: https://pkgs.tailscale.com/stable/rhel/9/$basearch 
     enabled: true
     state: present 
     gpgcheck: true 
