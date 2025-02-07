@@ -12,8 +12,66 @@
         name: "{{ preferred_shell }}"
         state: latest
 
-    - include_tasks: tasks/users.yml 
-    - include_tasks: tasks/repos.yml
-    - include_tasks: tasks/packages.yml
-    - include_tasks: tasks/system.yml
-    - include_tasks: tasks/extra_packages.yml
+    - name: Create primary_user with preferred_shell
+      user: 
+        name: "{{ primary_user }}"
+        shell: "/usr/bin/env {{ preferred_shell }}"
+
+    - name: DNF Makecache 
+      ansible.builtin.shell: dnf makecache
+
+    - name: Speed up DNF
+      ansible.builtin.shell: |
+        sed -i 's/.*{{ item.option }}=.*//g' /etc/dnf/dnf.conf
+        echo '{{ item.option }}={{ item.value }}' | tee -a /etc/dnf/dnf.conf
+      loop:
+        - { option: "max_parallel_downloads", value: "{{ dnf_max_parallel_downloads }}" }
+        - { option: "fastestmirror", value: "{{ dnf_fastestmirror }}" }
+
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: Install the nas system if requested
+      include_tasks: systems/nas.yml
+      when: system_type == "nas"
+
+    - name: Install the desktop system if requested
+      include_tasks: systems/desktop.yml
+      when: system_type == "desktop"
+
+    - name: Install the laptop system if requested
+      include_tasks: systems/laptop.yml
+      when: system_type == "laptop"
+
+    - name: Autoremove unneeded packages 
+      ansible.builtin.dnf: 
+        autoremove: true
+
+    - name: Change hostname 
+      ansible.builtin.hostname: 
+        name: "{{ hostname }}"
+
+    - name: Enable Tailscaled
+      ansible.builtin.systemd_service:
+        name: tailscaled
+        state: started
+        enabled: true
+
+    - name: Enable libvirtd 
+      ansible.builtin.systemd_service: 
+        name: libvirtd 
+        state: started 
+        enabled: true 
+
+    - name: Enable plocate-updatedb 
+      ansible.builtin.systemd_service: 
+        name: plocate-updatedb.timer 
+        state: started 
+        enabled: true 
+
+        # - include_tasks: tasks/repos.yml
+        # - include_tasks: tasks/packages.yml
+        # - include_tasks: tasks/system.yml
+        # - include_tasks: tasks/extra_packages.yml

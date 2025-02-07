@@ -4,8 +4,9 @@
 # make any necessary changes to this file to fit your use case, then rename the 
 # file to vars.yml. 
 
-primary_user: "user"
-preferred_shell: "/usr/bin/bash"
-hostname: "localhost"
+system_type: "laptop"  # One of "laptop", "desktop", "nas"
+primary_user: "aj"  # The main user account. Change this to your username
+preferred_shell: "zsh" 
+hostname: "{{ system_type }}"
 dnf_max_parallel_downloads: "15"
 dnf_fastestmirror: "True"

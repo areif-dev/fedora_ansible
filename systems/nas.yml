@@ -1,0 +1,69 @@
+- name: Add tailscale repo 
+  ansible.builtin.yum_repository:
+    name: tailscale-stable 
+    description: Tailscale stable 
+    async: true 
+    baseurl: https://pkgs.tailscale.com/stable/rhel/9/tailscale.repo
+    enabled: true
+    state: present 
+    gpgcheck: true 
+    repo_gpgcheck: true 
+    gpgkey: https://pkgs.tailscale.com/stable/rhel/9/repo.gpg
+
+- name: Enable EPEL 
+  ansible.builtin.dnf:
+    name: 
+      - "https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm",
+    disable_gpg_check: true
+
+- name: Enable RPM Fusion 
+  ansible.builtin.dnf:
+    name: 
+      - "https://mirrors.rpmfusion.org/free/el/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm",
+      - "https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    disable_gpg_check: true
+
+- name: Install base packages 
+  ansible.builtin.dnf:
+    state: latest
+    name: 
+      - bc 
+      - cockpit 
+      - cockpit-machines 
+      - cockpit-ostree 
+      - cockpit-podman 
+      - cockpit-system 
+      - cockpit-ws 
+      - distrobox 
+      - hledger 
+      - htop 
+      - libguestfs-tools 
+      - libvirt 
+      - libvirt-daemon-config-network 
+      - libvirt-daemon-kvm 
+      - man-db 
+      - man-pages 
+      - neovim 
+      - NetworkManager       
+      - NetworkManager-tui   
+      - NetworkManager-wifi  
+      - nvtop 
+      - openssh 
+      - openssl 
+      - openvpn 
+      - perl-Image-ExifTool 
+      - plocate 
+      - podman 
+      - podman-compose 
+      - python3-libguestfs  
+      - python3-ytmusicapi 
+      - qemu-kvm 
+      - ranger 
+      - ripgrep 
+      - tailscale 
+      - unzip 
+      - virt-manager 
+      - yt-dlp 
+      - zip  
+      - zsh 
+      - zsh-autosuggestions  
