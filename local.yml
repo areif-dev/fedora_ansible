@@ -15,9 +15,6 @@
         name: "{{ primary_user }}"
         shell: "/usr/bin/env {{ preferred_shell }}"
 
-    - name: DNF Makecache 
-      ansible.builtin.shell: dnf makecache
-
     - name: Speed up DNF
       ansible.builtin.shell: |
         sed -i 's/.*{{ item.option }}=.*//g' /etc/dnf/dnf.conf
@@ -25,11 +22,6 @@
       loop:
         - { option: "max_parallel_downloads", value: "{{ dnf_max_parallel_downloads }}" }
         - { option: "fastestmirror", value: "{{ dnf_fastestmirror }}" }
-
-    - name: Upgrade all packages
-      ansible.builtin.dnf:
-        name: "*"
-        state: latest
 
     - name: Install the nas system if requested
       include_tasks: systems/nas.yml
