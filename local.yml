@@ -55,11 +55,11 @@
         state: started 
         enabled: true 
 
-    - name: Enable plocate-updatedb 
-      ansible.builtin.systemd_service: 
-        name: plocate-updatedb.timer 
-        state: started 
-        enabled: true 
+          # - name: Enable plocate-updatedb 
+          #   ansible.builtin.systemd_service: 
+          #     name: plocate-updatedb.timer 
+          #     state: started 
+          #     enabled: true 
 
         # - include_tasks: tasks/repos.yml
         # - include_tasks: tasks/packages.yml
